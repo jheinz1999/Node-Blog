@@ -86,4 +86,31 @@ server.post('/api/users', async (req, res) => {
 
 });
 
+server.delete('/api/users/:id', async (req, res) => {
+
+  try {
+
+    const user = await userDB.get(req.params.id);
+
+    if (!user) {
+
+      res.status(404).json({error: "User not found!"});
+
+    }
+
+    await userDB.remove(req.params.id);
+
+    res.status(200).send();
+
+  }
+
+  catch (err) {
+
+    genericError(res);
+    return;
+
+  }
+
+});
+
 module.exports = server;
