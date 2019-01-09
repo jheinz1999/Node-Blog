@@ -1,0 +1,26 @@
+{
+  "name": "node-blog",
+  "version": "1.0.0",
+  "description": "## Topics",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jheinz1999/Node-Blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jheinz1999/Node-Blog/issues"
+  },
+  "homepage": "https://github.com/jheinz1999/Node-Blog#readme",
+  "dependencies": {
+    "knex": "^0.16.3",
+    "sqlite3": "^4.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
