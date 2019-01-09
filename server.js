@@ -95,12 +95,50 @@ server.delete('/api/users/:id', async (req, res) => {
     if (!user) {
 
       res.status(404).json({error: "User not found!"});
+      return;
 
     }
 
     await userDB.remove(req.params.id);
 
-    res.status(200).send();
+    res.status(200).json({message: 'User deleted!'});
+
+  }
+
+  catch (err) {
+
+    genericError(res);
+    return;
+
+  }
+
+});
+
+server.put('/api/users/:id', async (req, res) => {
+
+  try {
+
+    const user = await userDB.get(req.params.id);
+
+    if (!user) {
+
+      res.status(404).json({error: 'User not found!'});
+      return;
+
+    }
+
+    const name = req.body.name;
+
+    if (!name) {
+
+      res.status(400).json({error: 'Invalid request!'});
+      return;
+
+    }
+
+    await userDB.update(req.params.id, {name});
+
+    res.status(200).json({message: 'User updated!'});
 
   }
 
