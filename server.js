@@ -47,4 +47,43 @@ server.get('/api/users/:id', async (req, res) => {
 
 });
 
+server.post('/api/users', async (req, res) => {
+
+  const name = req.body.name;
+  let id;
+
+  if (!name || name.length > 128) {
+
+    res.status(400).json({error: 'Invalid request!'});
+    return;
+
+  }
+
+  try {
+
+    try {
+
+      id = await userDB.insert({name: req.body.name});
+
+    }
+
+    catch (err) {
+
+      res.status(400).json({error: 'User already exists!'});
+      return;
+
+    }
+
+    res.status(201).json(id);
+
+  }
+
+  catch (err) {
+
+    res.status(500).json({error: 'We were unable to process your request.'});
+
+  }
+
+});
+
 module.exports = server;
