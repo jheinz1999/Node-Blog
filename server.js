@@ -32,8 +32,12 @@ server.get('/api/users/:id', async (req, res) => {
 
     const user = await userDB.get(req.params.id);
 
-    if (user)
+    if (user) {
+
       res.status(200).json(user);
+      return;
+
+    }
 
     res.status(404).json({error: 'User not found!'});
 
@@ -136,7 +140,18 @@ server.put('/api/users/:id', async (req, res) => {
 
     }
 
-    await userDB.update(req.params.id, {name});
+    try {
+
+      await userDB.update(req.params.id, {name});
+
+    }
+
+    catch (err) {
+
+      res.status(400).json({error: 'Username exists! Pick another username.'});
+      return;
+
+    }
 
     res.status(200).json({message: 'User updated!'});
 
