@@ -114,4 +114,61 @@ router.delete('/:id', async (req, res) => {
 
 });
 
+router.put('/:id', async (req, res) => {
+
+  try {
+
+    const id = req.params.id;
+    const post = await postDB.get(id);
+
+    if (!post) {
+
+      res.status(404).json({error: 'Post not found!'});
+      return;
+
+    }
+
+    const { userId, text } = req.body;
+
+    if (!userId) {
+
+      res.status(400).json({error: 'You forgot to send a userId property!'});
+      return;
+
+    }
+
+    if (!text) {
+
+      res.status(400).json({error: 'You forgot to send the updated text!'});
+      return;
+
+    }
+
+    if (userId != post.userId) {
+
+      res.status(401).json({error: 'Your user ID doesn\'t match this post!'});
+      return;
+
+    }
+
+    console.log('test');
+
+    await postDB.update(req.params.id, { id, userId, text });
+
+    console.log('test2');
+
+    res.status(200).json({message: 'Post updated!'});
+
+  }
+
+  catch (err) {
+
+    console.log(err);
+    genericError(res);
+    return;
+
+  }
+
+});
+
 module.exports = router;
