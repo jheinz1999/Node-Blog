@@ -2,6 +2,7 @@ const express = require('express');
 
 const genericError = require('../common/genericError');
 const postDB = require('../data/helpers/postDb');
+const userDB = require('../data/helpers/userDb');
 
 const router = express.Router();
 
@@ -9,7 +10,24 @@ router.get('/', async (req, res) => {
 
   try {
 
-    const posts = await postDB.get();
+    let posts;
+
+    if (!req.query.userId) {
+
+      posts = await postDB.get();
+      res.status(200).json(posts);
+      return;
+
+    }
+
+    posts = await userDB.getUserPosts(req.query.userId);
+
+    if (!posts.length) {
+
+      res.status(400).json({error: 'Invalid user id!'});
+
+    }
+
     res.status(200).json(posts);
 
   }
