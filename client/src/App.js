@@ -1,8 +1,26 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
+
+import LoginView from './views/LoginView';
 
 class App extends Component {
+
   render() {
+
+    const { history, location } = this.props;
+
+    if (!localStorage.user && location.pathname !== '/login') {
+
+      history.push('/login');
+
+    }
+
+    else if (localStorage.user && location.pathname === '/') {
+
+      history.push('/blog');
+
+    }
+
     return (
       <div className="App">
 
@@ -15,7 +33,7 @@ class App extends Component {
         <Route
           exact
           path='/login'
-          render={() => <h1>Log In</h1>}
+          render={() => <LoginView />}
         />
 
         <Route
@@ -27,6 +45,7 @@ class App extends Component {
       </div>
     );
   }
+
 }
 
-export default App;
+export default withRouter(App);
