@@ -47,4 +47,45 @@ router.get('/:id', async (req, res) => {
 
 });
 
+
+
+router.post('/', async (req, res) => {
+
+  const { userId, text } = req.body;
+  let id;
+
+  if (!text) {
+
+    res.status(400).json({error: 'Invalid request!'});
+    return;
+
+  }
+
+  try {
+
+    try {
+
+      id = await postDB.insert({userId, text});
+
+    }
+
+    catch (err) {
+
+      res.status(400).json({msg: err, error: 'User already exists!'});
+      return;
+
+    }
+
+    res.status(201).json(id);
+
+  }
+
+  catch (err) {
+
+    genericError(res);
+
+  }
+
+});
+
 module.exports = router;
