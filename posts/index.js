@@ -47,8 +47,6 @@ router.get('/:id', async (req, res) => {
 
 });
 
-
-
 router.post('/', async (req, res) => {
 
   const { userId, text } = req.body;
@@ -83,6 +81,34 @@ router.post('/', async (req, res) => {
   catch (err) {
 
     genericError(res);
+
+  }
+
+});
+
+router.delete('/:id', async (req, res) => {
+
+  try {
+
+    const post = await postDB.get(req.params.id);
+
+    if (!post) {
+
+      res.status(404).json({error: "Post not found!"});
+      return;
+
+    }
+
+    await postDB.remove(req.params.id);
+
+    res.status(200).json({message: 'Post deleted!'});
+
+  }
+
+  catch (err) {
+
+    genericError(res);
+    return;
 
   }
 
