@@ -7,6 +7,13 @@ const server = express();
 
 const genericError = res => res.status(500).json({error: 'We were unable to process your request.'});
 
+const upperCaser = (req, res, next) => {
+
+  if (req.body.name) req.body.name = req.body.name.toUpperCase();
+  next();
+
+}
+
 server.use(express.json());
 
 server.get('/api/users', async (req, res) => {
@@ -51,7 +58,7 @@ server.get('/api/users/:id', async (req, res) => {
 
 });
 
-server.post('/api/users', async (req, res) => {
+server.post('/api/users', upperCaser, async (req, res) => {
 
   const name = req.body.name;
   let id;
@@ -118,7 +125,7 @@ server.delete('/api/users/:id', async (req, res) => {
 
 });
 
-server.put('/api/users/:id', async (req, res) => {
+server.put('/api/users/:id', upperCaser, async (req, res) => {
 
   try {
 
