@@ -70,9 +70,18 @@ router.post('/', async (req, res) => {
   const { userId, text } = req.body;
   let id;
 
-  if (!text) {
+  if (!text || !userId) {
 
     res.status(400).json({error: 'Invalid request!'});
+    return;
+
+  }
+
+  const user = await userDB.get(userId);
+
+  if (!user) {
+
+    res.status(400).json({error: 'User does not exist'});
     return;
 
   }
@@ -87,7 +96,7 @@ router.post('/', async (req, res) => {
 
     catch (err) {
 
-      res.status(400).json({msg: err, error: 'User already exists!'});
+      res.status(400).json({msg: err, error: 'Post already exists!'});
       return;
 
     }
@@ -164,7 +173,7 @@ router.put('/:id', async (req, res) => {
 
     if (userId != post.userId) {
 
-      res.status(401).json({error: 'Your user ID doesn\'t match this post!'});
+      res.status(403).json({error: 'Your user ID doesn\'t match this post!'});
       return;
 
     }
